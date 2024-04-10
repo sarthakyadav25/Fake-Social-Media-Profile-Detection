@@ -4,6 +4,10 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 import pickle
 import numpy as np
+import instaloader
+
+
+model = pickle.load(open('../django_backend/Machine Learning/model.pkl','rb'))
 
 #path for home page
 def index(request):
@@ -44,9 +48,49 @@ def admin(request):
 def dashboard(request):
     return render(request,'dashboard.html')
 
+def detect(request):
+    return render(request,'detect.html')
+
+def get_instagram_profile_info(username):
+    L = instaloader.Instaloader()
+    try:
+        L.login('tech.nova25', 'syadav@2503')
+    except instaloader.exceptions.LoginRequiredException:
+        L.interactive_login('tech.nova25')
+
+    profile = instaloader.Profile.from_username(L.context, username)
+
+    return {
+        "profile_pic_url": profile.profile_pic_url,
+        "num_posts": profile.mediacount,
+        "num_followers": profile.followers,
+        "num_follows": profile.followees,
+        "full_name_words": len(profile.full_name.split()),
+        "full_name_length": len(profile.full_name),
+        "username_length": len(profile.username),
+        "username_equals_fullname": profile.username == profile.full_name,
+        "description_length": len(profile.biography),
+        "external_url": profile.external_url,
+        "private": profile.is_private,
+    }
+
 def predict(request):
-    model = pickle.load(open('../django_backend/Machine Learning/model.pkl','rb'))
-    features = [1,0.27,0,0,0,53,0,0,32,1000,955]
+    if request.method == "POST":
+        profile_link = request.POST['profile_link']
+        username = profile_link
+    profile_info = get_instagram_profile_info(username)
+    profile_pic = profile_info["profile_pic_url"] != None
+    username_length = profile_info["username_length"]
+    fullname_words = profile_info["full_name_words"]
+    nums_length_fullname = profile_info["full_name_length"]
+    name_username = profile_info["username_equals_fullname"]
+    desc_length = profile_info["description_length"]
+    extr_url = profile_info["external_url"] != None
+    private = profile_info["private"]
+    posts = profile_info["num_posts"]
+    followers = profile_info["num_followers"]
+    following = profile_info["num_follows"]
+    features = [profile_pic,username_length,fullname_words,nums_length_fullname,name_username,desc_length,extr_url,private,posts,followers,following]
     final = [np.array(features)]
     prediction = model.predict(final)
     print(prediction)
@@ -54,3 +98,5 @@ def predict(request):
         return HttpResponse("Genuine")
     else:
         return HttpResponse("Fake")
+    
+

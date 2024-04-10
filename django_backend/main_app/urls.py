@@ -7,5 +7,6 @@ urlpatterns = [
     path('login', views.login,name="login"),
     path('appadmin',views.admin,name='admin'),
     path('dashboard',views.dashboard,name='dashboard'),
-    path('predict',views.predict,name='predict')
+    path('predict',views.predict,name='predict'),
+    path('detect',views.detect,name='detect')
 ]
