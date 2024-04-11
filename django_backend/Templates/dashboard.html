@@ -26445,7 +26445,6 @@
 
         <!--Graph Content -->
 
-
         <div class="row removable">
             <div class="col-lg-4">
                 <div class="card card-profile">
@@ -26454,30 +26453,27 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-3 order-lg-2">
                             <div class="card-profile-image">
-                                <a href="#">
-                                    <img src="https://demos.creative-tim.com/argon-dashboard/assets-old/img/theme/team-4.jpg"
+                                <a href="{{profile_info.profile_pic_url}}">
+                                    <img src="{{profile_info.profile_pic_url}}" alt="error loading img..."
                                         class="rounded-circle">
                                 </a>
                             </div>
                         </div>
                     </div>
                     <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                        <div class="d-flex justify-content-between">
-                            <a href="#" class="btn btn-sm mr-4 btn-default">Connect</a>
-                            <a href="#" class="btn btn-sm float-right btn-warning">Message</a>
-                        </div>
+                      
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
                             <div class="col">
                                 <div class="card-profile-stats d-flex justify-content-center">
                                     <div>
-                                        <span class="heading">22</span>
+                                        <span class="heading">{{profile_info.num_follows}}</span>
                                         <span class="description">Friends</span>
                                     </div>
                                     <div>
-                                        <span class="heading">10</span>
-                                        <span class="description">Photos</span>
+                                        <span class="heading">{{profile_info.num_posts}}</span>
+                                        <span class="description">Posts</span>
                                     </div>
                                     <div>
                                         <span class="heading">89</span>
@@ -26488,16 +26484,22 @@
                         </div>
                         <div class="text-center">
                             <h5 class="h3">
-                                Jessica Jones<span class="font-weight-light">, 27</span>
+                                {{profile_info.fullname}}<span class="font-weight-light">, 27</span>
                             </h5>
+                            {%if profile_info.category != None%}
                             <h5 class="font-weight-300">
-                                Bucharest, Romania
+                                {{profile_info.category}}
                             </h5>
+                            {%else%}
+                            <h5 class="font-weight-300">
+                                Personal
+                            </h5>
+                            {%endif%}
                             <h5 class="h5 mt-4">
-                                Solution Manager - Creative Tim Officer
+                                {{profile_info.biography}}
                             </h5>
                             <h5>
-                                University of Computer Science
+                                {{profile_info.username}}
                             </h5>
                         </div>
                     </div>
@@ -26506,9 +26508,16 @@
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header bg-transparent">
-                        <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
-                        <h5 class="h3 mb-0">Total orders</h5>
+                        <h6 class="text-uppercase text-muted ls-1 mb-1">Prediction</h6>
+                        <h5 class="h3 mb-0">Detection Of Fake Profile</h5>
                     </div>
+                    {%if profile_info.fake == 1%}
+                    <h1 style="color: red; text-align: center;" >The Profile Looks Fake</h1>
+                    <h2 style="text-align: center;">The profile is not safe and is suspicious to be a fake profile</h2>
+                    {%else%}
+                    <h1 style="color: green; text-align: center;">The Profile Looks Genuine</h1>
+                    <h2 style="text-align: center;">The profile is safe and is a genuine profile</h2>
+                    {%endif%}
                     <div class="card-body">
                         <div class="chart">
                             <div class="chartjs-size-monitor">
@@ -26939,7 +26948,7 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">Followers</h5>
-                                    <span class="h2 font-weight-bold mb-0">2,356</span>
+                                    <span class="h2 font-weight-bold mb-0">{{profile_info.num_followers}}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape text-white rounded-circle shadow bg-gradient-warning">
@@ -26957,8 +26966,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">likes</h5>
-                                    <span class="h2 font-weight-bold mb-0">10,442</span>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Following</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{profile_info.num_follows}}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape text-white rounded-circle shadow bg-gradient-success">
@@ -26973,7 +26982,7 @@
                         </div>
                     </div>
     
-                    <div class="card card-stats">
+                    <!-- <div class="card card-stats">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
@@ -26991,7 +27000,7 @@
                                 <span class="text-nowrap">Since last week</span>
                             </p>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

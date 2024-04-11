@@ -11,7 +11,7 @@ model = pickle.load(open('../django_backend/Machine Learning/model.pkl','rb'))
 
 #path for home page
 def index(request):
-    return render(request,'index.html')
+    return render(request,'index.html',{"user":request.user})
 
 
 #path for login page
@@ -72,6 +72,10 @@ def get_instagram_profile_info(username):
         "description_length": len(profile.biography),
         "external_url": profile.external_url,
         "private": profile.is_private,
+        "username":profile.username,
+        "bio":profile.biography,
+        "category":profile.business_category_name,
+        "fullname":profile.full_name
     }
 
 def predict(request):
@@ -95,8 +99,17 @@ def predict(request):
     prediction = model.predict(final)
     print(prediction)
     if not prediction:
-        return HttpResponse("Genuine")
+        profile_info['fake'] = 0
+        return render(request,'dashboard.html',{'profile_info':profile_info})
+        # return HttpResponse("Genuine")
     else:
-        return HttpResponse("Fake")
+        profile_info['fake'] = 1
+        # return HttpResponse("Fake")
+
+#logic for logout
+def logout(request):
+    if request.user:
+        auth.logout(request)
+        return redirect('/')
     
 
