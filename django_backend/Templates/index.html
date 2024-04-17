@@ -20,12 +20,40 @@
     .gradient {
       background: linear-gradient(90deg, #025d9e 0%, #000000 100%);
     }
-
+    #loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 9999;
+        }
+        .loader-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     
   </style>
 </head>
 
 <body class="leading-normal tracking-normal text-white gradient" style="font-family: 'Source Sans Pro', sans-serif;">
+  <div id="loader">
+    <div class="loader-spinner"></div>
+</div>
   <!--Nav-->
   <nav id="header" class="fixed w-full z-30 top-0 text-white">
     <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
@@ -369,6 +397,10 @@
       }
       return false;
     }
+        // Show loader when redirecting
+        window.addEventListener('beforeunload', function() {
+        document.getElementById('loader').style.display = 'block';
+    });
   </script>
 </body>
 

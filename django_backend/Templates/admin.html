@@ -1,7 +1,7 @@
 {% load static%}
 
 
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -65,7 +65,7 @@
               </li>
               <li class="mr-3">
                 <a class="inline-block md:text-white text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
-                  href="/flask-news v1/templates/index3.html">Dashboard</a>
+                  href="dashboard">Dashboard</a>
               </li>
     
     
@@ -77,9 +77,16 @@
     
 
             </ul>
+            {%if not user.is_authenticated%}
             <button id="navAction"
-              class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"> <a href="login1.html">Sign in</a>
+              class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"> <a href="login">Sign in</a>
             </button>
+            {%else%}
+            <button id="navAction"
+            class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"> <a href="logout">Logout</a>
+          </button>
+          {%endif%}
+            
           </div>
         </div>
         <hr class="border-b border-gray-100 opacity-25 my-0 py-0" />
@@ -141,15 +148,15 @@
                             <tr>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    User
+                                    Username
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Rol
+                                    Account Searched
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Created at
+                                    Searched at
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -158,6 +165,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {%for profile in profiles_searched%}
                             <tr>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                     <div class="flex items-center">
@@ -168,51 +176,30 @@
                                         </div> -->
                                         <div class="ml-3">
                                             <p class="text-gray-900 whitespace-no-wrap">
-                                                Pradeep
+                                                {{profile.name}}
                                             </p>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">twitter username="pradeep_04_03"</p>
+                                    <p class="text-gray-900 whitespace-no-wrap">Instagram username="{{profile.username}}"</p>
                                 </td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                     <p class="text-gray-900 whitespace-no-wrap">
-                                        Jan 21, 2020
+                                        {{profile.timestamp}}
                                     </p>
                                 </td>
+                                {%if not profile.fake%}
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                     <span
                                         class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                         <span aria-hidden
                                             class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                        <span class="relative">Active</span>
+                                        <span class="relative">Genuine</span>
+                                        
                                     </span>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <div class="flex items-center">
-                                        <!-- <div class="flex-shrink-0 w-10 h-10">
-                                            <img class="w-full h-full rounded-full"
-                                                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                alt="" />
-                                        </div> -->
-                                        <div class="ml-3">
-                                            <p class="text-gray-900 whitespace-no-wrap">
-                                                Naman oberoi
-                                            </p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">twitter username - "namannn"</p>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">
-                                        Sep 27, 2009
-                                    </p>
-                                </td>
+                                {%else%}
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                     <span
                                         class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -221,39 +208,9 @@
                                         <span class="relative">Fake</span>
                                     </span>
                                 </td>
+                                {%endif%}
                             </tr>
-                            <tr>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <div class="flex items-center">
-                                        <!-- <div class="flex-shrink-0 w-10 h-10">
-                                            <img class="w-full h-full rounded-full"
-                                                src="https://images.unsplash.com/photo-1540845511934-7721dd7adec3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                alt="" />
-                                        </div> -->
-                                        <div class="ml-3">
-                                            <p class="text-gray-900 whitespace-no-wrap">
-                                                Ravisutanjani
-                                            </p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">twitter username="ravisutanjani"</p>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">
-                                        Jan 10, 2020
-                                    </p>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <span
-                                        class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
-                                        <span aria-hidden
-                                            class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
-                                        <span class="relative">Suspended</span>
-                                    </span>
-                                </td>
-                            </tr>
+                            {%endfor%}
                             
                         </tbody>
                     </table>

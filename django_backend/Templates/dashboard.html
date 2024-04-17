@@ -26407,8 +26407,8 @@
 
                         <div class="relative text-sm">
                             <button id="userButton" class="flex items-center focus:outline-none mr-3">
-                                <img class="w-8 h-8 rounded-full mr-4" src="http://i.pravatar.cc/300"
-                                    alt="Avatar of User"> <span class="hidden md:inline-block">Hi, User </span>
+                                <img class="w-8 h-8 rounded-full mr-4" src="https://t3.ftcdn.net/jpg/05/53/79/60/360_F_553796090_XHrE6R9jwmBJUMo9HKl41hyHJ5gqt9oz.jpg"
+                                    alt="Avatar of User"> <span class="hidden md:inline-block">Hi, {{user.username}} </span>
                                 <svg class="pl-2 h-2" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink"
                                     enable-background="new 0 0 129 129">
@@ -26453,9 +26453,8 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-3 order-lg-2">
                             <div class="card-profile-image">
-                                <a href="{{profile_info.profile_pic_url}}">
-                                    <img src="{{profile_info.profile_pic_url}}" alt="error loading img..."
-                                        class="rounded-circle">
+                                <a href="{{profile_pic}}">
+                                    <img src="{{profile_pic}}" alt="error loading img..." class="rounded-circle">
                                 </a>
                             </div>
                         </div>
@@ -26484,7 +26483,7 @@
                         </div>
                         <div class="text-center">
                             <h5 class="h3">
-                                {{profile_info.fullname}}<span class="font-weight-light">, 27</span>
+                                {{profile_info.fullname}}<span class="font-weight-light"></span>
                             </h5>
                             {%if profile_info.category != None%}
                             <h5 class="font-weight-300">
@@ -26512,10 +26511,10 @@
                         <h5 class="h3 mb-0">Detection Of Fake Profile</h5>
                     </div>
                     {%if profile_info.fake == 1%}
-                    <h1 style="color: red; text-align: center;" >The Profile Looks Fake</h1>
+                    <h1 style="color: red; text-align: center; font-size: 40px;" >The Profile Looks Fake</h1>
                     <h2 style="text-align: center;">The profile is not safe and is suspicious to be a fake profile</h2>
                     {%else%}
-                    <h1 style="color: green; text-align: center;">The Profile Looks Genuine</h1>
+                    <h1 style="color: green; text-align: center; font-size: 40px;">The Profile Looks Genuine</h1>
                     <h2 style="text-align: center;">The profile is safe and is a genuine profile</h2>
                     {%endif%}
                     <div class="card-body">
@@ -27027,15 +27026,15 @@
                 new Chart(chart, {
                     type: "bar",
                     data: {
-                        labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                        labels: ["Username", "Full Name", "Posts", "Followers", "Following", "Profile Pic"],
                         datasets: [
                             {
-                                label: "Sales",
+                                label: "Fakeness",
                                 tension: 0.4,
                                 borderWidth: 0,
                                 pointRadius: 0,
                                 backgroundColor: "#fb6340",
-                                data: [25, 20, 30, 22, 17, 29],
+                                data: [50, 50, 50, 50, 50, 50],
                                 maxBarThickness: 10,
                             },
                         ],
@@ -27105,15 +27104,15 @@
                 new Chart(chart, {
                     type: "line",
                     data: {
-                        labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                        labels: ["Username", "Full Name", "Posts", "Followers", "Following", "Profile Pic"],
                         datasets: [{
-                            label: "Performance",
+                            label: "Fakeness",
                             tension: 0.4,
                             borderWidth: 4,
                             borderColor: "#5e72e4",
                             pointRadius: 0,
                             backgroundColor: "transparent",
-                            data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
+                            data: [50, 50, 50, 50, 55, 50, 50, 50, 50],
                         },],
                     },
                     options: {
@@ -27320,7 +27319,7 @@
                     userMenuDiv.classList.add("invisible");
                 }
             }
-
+so
         }
 
         function checkParent(t, elm) {
@@ -27333,6 +27332,7 @@
             return false;
         }
     </script>
+
 
 </body>
 
