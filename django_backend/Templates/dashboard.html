@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
     <title>Dashboard</title>
     <meta name="description" content="description here">
     <meta name="keywords" content="keywords,here">
@@ -26362,17 +26364,17 @@
 
         <ul class="list-reset ">
             <li class="my-2 md:my-0">
-                <a href="#"
+                <a href="/"
                     class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
                     <i class="fas fa-home fa-fw mr-3"></i><span
                         class="w-full inline-block pb-1 md:pb-0 text-sm">Home</span>
                 </a>
             </li>
             <li class="my-2 md:my-0">
-                <a href="#"
+                <a href="/detect"
                     class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
                     <i class="fas fa-chart-area fa-fw mr-3 text-indigo-400"></i><span
-                        class="w-full inline-block pb-1 md:pb-0 text-sm">Analytics</span>
+                        class="w-full inline-block pb-1 md:pb-0 text-sm">Detect</span>
                 </a>
             </li>
         </ul>
@@ -26407,8 +26409,10 @@
 
                         <div class="relative text-sm">
                             <button id="userButton" class="flex items-center focus:outline-none mr-3">
-                                <img class="w-8 h-8 rounded-full mr-4" src="https://t3.ftcdn.net/jpg/05/53/79/60/360_F_553796090_XHrE6R9jwmBJUMo9HKl41hyHJ5gqt9oz.jpg"
-                                    alt="Avatar of User"> <span class="hidden md:inline-block">Hi, {{user.username}} </span>
+                                <img class="w-8 h-8 rounded-full mr-4"
+                                    src="https://t3.ftcdn.net/jpg/05/53/79/60/360_F_553796090_XHrE6R9jwmBJUMo9HKl41hyHJ5gqt9oz.jpg"
+                                    alt="Avatar of User"> <span class="hidden md:inline-block">Hi, {{user.username}}
+                                </span>
                                 <svg class="pl-2 h-2" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink"
                                     enable-background="new 0 0 129 129">
@@ -26431,7 +26435,7 @@
                                     <li>
                                         <hr class="border-t mx-2 border-gray-400">
                                     </li>
-                                    <li><a href="#"
+                                    <li><a href="/logout"
                                             class="px-4 py-2 block text-gray-900 hover:bg-indigo-400 hover:text-white no-underline hover:no-underline">Logout</a>
                                     </li>
                                 </ul>
@@ -26448,7 +26452,7 @@
         <div class="row removable">
             <div class="col-lg-4">
                 <div class="card card-profile">
-                    <img src="https://demos.creative-tim.com/argon-dashboard/assets-old/img/theme/img-1-1000x600.jpg"
+                    <img src="https://static.vecteezy.com/system/resources/thumbnails/006/852/817/small_2x/abstract-colorful-gradient-lines-with-blue-and-pink-light-on-purple-background-free-vector.jpg"
                         alt="Image placeholder" class="card-img-top">
                     <div class="row justify-content-center">
                         <div class="col-lg-3 order-lg-2">
@@ -26460,7 +26464,7 @@
                         </div>
                     </div>
                     <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                      
+
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
@@ -26511,7 +26515,7 @@
                         <h5 class="h3 mb-0">Detection Of Fake Profile</h5>
                     </div>
                     {%if profile_info.fake == 1%}
-                    <h1 style="color: red; text-align: center; font-size: 40px;" >The Profile Looks Fake</h1>
+                    <h1 style="color: red; text-align: center; font-size: 40px;">The Profile Looks Fake</h1>
                     <h2 style="text-align: center;">The profile is not safe and is suspicious to be a fake profile</h2>
                     {%else%}
                     <h1 style="color: green; text-align: center; font-size: 40px;">The Profile Looks Genuine</h1>
@@ -26567,8 +26571,11 @@
                                     <div class=""></div>
                                 </div>
                             </div>
-                            <canvas id="chart-bars" class="chart-canvas chartjs-render-monitor" width="1348"
-                                height="700" style="display: block; height: 350px; width: 674px;"></canvas>
+                            {%if profile_info.fake == 0%}
+                            <canvas id="myChart" style="width:100%;"></canvas>
+                            {%else%}
+                            <canvas id="myChart2" style="width:100%;"></canvas>
+                            {%endif%}
                         </div>
                     </div>
                 </div>
@@ -26726,7 +26733,8 @@
                                 aria-expanded="false">
                                 <i class="fa fa-layer-group"></i>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-default  dropdown-menu-right ">
+                            <div
+                                class="dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-default  dropdown-menu-right ">
                                 <div class="row shortcuts px-4">
                                     <a href="#!" class="col-4 shortcut-item text-center">
                                         <span class="shortcut-media avatar rounded-circle bg-gradient-red">
@@ -26980,7 +26988,7 @@
                             </p>
                         </div>
                     </div>
-    
+
                     <!-- <div class="card card-stats">
                         <div class="card-body">
                             <div class="row">
@@ -27319,7 +27327,7 @@
                     userMenuDiv.classList.add("invisible");
                 }
             }
-so
+            so
         }
 
         function checkParent(t, elm) {
@@ -27331,6 +27339,55 @@ so
             }
             return false;
         }
+    </script>
+
+<script>
+    const xValues = [50,60,70,80,90,100,110,120,130,140,150];
+    const yValues = [7,8,8,9,9,9,10,11,14,14,15];
+    
+    new Chart("myChart", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{
+          fill: false,
+          lineTension: 0,
+          backgroundColor: "rgba(0, 0, 0, 0,0)",
+          borderColor: "rgba(0, 255, 0, 0.5)",
+          data: yValues
+        }]
+      },
+      options: {
+        legend: {display: false},
+        scales: {
+          yAxes: [{ticks: {min: 6, max:16}}],
+        }
+      }
+    });
+    </script>
+
+<script>
+    
+    
+    new Chart("myChart2", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{
+          fill: false,
+          lineTension: 0,
+          backgroundColor: "rgba(0, 0, 0, 0,0)",
+          borderColor: "rgba(255, 128, 0, 0.5)",
+          data: yValues
+        }]
+      },
+      options: {
+        legend: {display: false},
+        scales: {
+          yAxes: [{ticks: {min: 6, max:16}}],
+        }
+      }
+    });
     </script>
 
 

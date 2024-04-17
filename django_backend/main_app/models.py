@@ -13,4 +13,4 @@ class Profile(models.Model):
     timestamp = models.DateTimeField(auto_now_add = True)
 
     def __str__(self):
-        return self.username
+        return f"{self.name} searched {self.username}"
