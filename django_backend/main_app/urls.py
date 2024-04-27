@@ -10,5 +10,6 @@ urlpatterns = [
     path('predict',views.predict,name='predict'),
     path('detect',views.detect,name='detect'),
     path('logout',views.logout,name='logout'),
-    path('notfound',views.notfound,name='notfound')
+    path('notfound',views.notfound,name='notfound'),
+    path('verify/<str:token>',views.verify,name='verify')
 ]
