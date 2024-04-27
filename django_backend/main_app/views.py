@@ -8,9 +8,12 @@ import instaloader
 import requests
 import os
 import requests
-from .models import Profile
+from .models import Profile,UserProfile
 from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required,user_passes_test
+import uuid
+from .utils import send_email
+from .config import envset
 
 
 
@@ -37,13 +40,23 @@ def login(request):
                 user = User.objects.create_user(username=name,email=email)
                 user.set_password(passwd)
                 user.save()
+                user_profile = UserProfile.objects.create(user=user,email_token = str(uuid.uuid4()))
+                user_profile.save()
+                send_email(email,user_profile.email_token)
+                messages.info(request,"Verification email has been sent please verify your account")
                 return redirect('login')
         else:
             user = auth.authenticate(username=email,password =passwd)
-            print(user)
-            if user is not None:
+            if user:
+                user_profile = UserProfile.objects.get(user=user)
+            if user is not None and user_profile.is_verified:
                 auth.login(request,user)
                 return redirect('/')
+            elif user_profile.is_verified == False:
+                messages.info(request,'Please Verify Your Email First Link Has Been Sent')
+                send_email(user.email,user_profile.email_token)
+                return redirect('login')
+
             else:
                 messages.info(request,'Invalid Credentials')
                 return redirect('login')
@@ -71,9 +84,9 @@ def get_instagram_profile_info(username):
     try:
         L = instaloader.Instaloader()
         try:
-            L.login('tech.nova25', r'syadav@2503')
+            L.login(envset.instagram_username, envset.instagram_password)
         except instaloader.exceptions.LoginRequiredException:
-            L.interactive_login('tech.nova25')
+            L.interactive_login('techinnovate.25')
         
         profile = instaloader.Profile.from_username(L.context, username)
     except Exception as e:
@@ -163,4 +176,15 @@ def logout(request):
 #login for a standard not found template
 def notfound(request):
     return HttpResponse('<h1>404 Not Found</h1><br><h1>OR</h1><br><h1> Maybe Admin permission required</h1>')
+
+#logic for email verification
+def verify(request,token):
+    try:
+        user_profile = UserProfile.objects.get(email_token = token)
+        user_profile.is_verified = True
+        user_profile.save()
+        return HttpResponse("Your Email Has Been Verified")
+    except Exception as e:
+        return HttpResponse("Error In Verifying Email Try Logging In Again")
+
 
