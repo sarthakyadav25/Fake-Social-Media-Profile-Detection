@@ -12,3 +12,15 @@ def send_email(email,token):
     except Exception as e:
         print(e)
         return False
+    
+def send_reset_email(email,token):
+    try:
+        subject = 'Click On The Link To Reset Password'
+        message = f'Click Here http://127.0.0.1:8000/reset_password/{token}'
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [email, ]
+        send_mail( subject, message, email_from, recipient_list )
+        return True
+    except Exception as e:
+        print(e)
+        return False

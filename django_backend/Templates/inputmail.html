@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up and Sign In Form</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'inputmail.css' %}">
 </head>
 
 <body>
@@ -16,24 +16,15 @@
     </div>
     <div class="container">
         <div class="form-box">
-            <h1 id="title">Sign Up</h1>
+            <h1 id="title">Reset Password</h1>
             <form method="post" id="signupForm">
                 {% csrf_token %}
                 <div class="input-group">
-                    <div class="input-field" id="nameField">
-                        <input type="text" placeholder="Name" name="name">
-                    </div>
                     <div class="input-field">
                         <input type="email" placeholder="Email" name="email">
                     </div>
-                    <div class="input-field">
-                        <input type="password" placeholder="Password" name="password">
-                    </div>
-                    <p>Lost password <a href="reset">Click Here!</a></p>
                 </div>
                 <div class="btn-field">
-                    <button type="button" id="signupBtn">Sign up</button>
-                    <button type="button" id="signinBtn" class="disable">Sign in</button>
                     <button type="submit" class="submit-btn">Submit</button> <!-- New submit button -->
                 </div>
             </form>

@@ -11,5 +11,7 @@ urlpatterns = [
     path('detect',views.detect,name='detect'),
     path('logout',views.logout,name='logout'),
     path('notfound',views.notfound,name='notfound'),
-    path('verify/<str:token>',views.verify,name='verify')
+    path('verify/<str:token>',views.verify,name='verify'),
+    path('reset',views.check_user,name='reset'),
+    path('reset_password/<str:token>',views.reset_password,name='resetpassword')
 ]

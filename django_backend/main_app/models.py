@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     email_token = models.CharField(max_length=200)
+    reset_password_token = models.CharField(max_length=200,default="0")
     is_verified = models.BooleanField(default=False)
 
     def __str__(self) -> str:
