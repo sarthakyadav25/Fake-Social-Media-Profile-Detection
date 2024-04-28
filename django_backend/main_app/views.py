@@ -1,3 +1,4 @@
+from email import message
 from django.http import HttpResponse
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
@@ -12,7 +13,7 @@ from .models import Profile,UserProfile
 from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required,user_passes_test
 import uuid
-from .utils import send_email
+from .utils import send_email,send_reset_email
 from .config import envset
 
 
@@ -49,14 +50,13 @@ def login(request):
             user = auth.authenticate(username=email,password =passwd)
             if user:
                 user_profile = UserProfile.objects.get(user=user)
-            if user is not None and user_profile.is_verified:
-                auth.login(request,user)
-                return redirect('/')
-            elif user_profile.is_verified == False:
-                messages.info(request,'Please Verify Your Email First Link Has Been Sent')
-                send_email(user.email,user_profile.email_token)
-                return redirect('login')
-
+                if user is not None and user_profile.is_verified:
+                    auth.login(request,user)
+                    return redirect('/')
+                elif user_profile.is_verified == False:
+                    messages.info(request,'Please Verify Your Email First Link Has Been Sent')
+                    send_email(user.email,user_profile.email_token)
+                    return redirect('login')
             else:
                 messages.info(request,'Invalid Credentials')
                 return redirect('login')
@@ -67,7 +67,7 @@ def login(request):
 #path for admin panel
 @user_passes_test(lambda u: u.is_superuser,login_url='/notfound')
 def admin(request):
-    profiles_searched = Profile.objects.all()
+    profiles_searched = Profile.objects.all().order_by('-timestamp')
     return render(request,'admin.html',{'user':request.user,'profiles_searched':profiles_searched})
 
 #path for dashboard
@@ -182,9 +182,51 @@ def verify(request,token):
     try:
         user_profile = UserProfile.objects.get(email_token = token)
         user_profile.is_verified = True
+        user_profile.email_token = "0"
         user_profile.save()
         return HttpResponse("Your Email Has Been Verified")
     except Exception as e:
         return HttpResponse("Error In Verifying Email Try Logging In Again")
-
+    
+#logic for reset password email input
+def check_user(request):
+    if request.method == "POST":
+        email = request.POST["email"]
+        user = User.objects.get(email=email)
+        if user:
+            user_profile = UserProfile.objects.get(user=user)
+            reset_token = str(uuid.uuid4())
+            user_profile.reset_password_token = reset_token
+            user_profile.save()
+            send_reset_email(email,reset_token)
+            messages.info(request,"Reset Password Email Has Been Sent To Your Mail Id")
+            return redirect('login')
+        else:
+            messages.info(request,"No User With That Email Exist")
+            return redirect('reset')
+    else:
+        return render(request,'inputmail.html')
+    
+def reset_password(request,token):
+    try:
+        user_profile = UserProfile.objects.get(reset_password_token = token)
+        if user_profile:
+            if request.method == "POST":
+                password = request.POST['password']
+                cnfpassword = request.POST['cnfpassword']
+                if password == cnfpassword:
+                    user = user_profile.user
+                    user.set_password(password)
+                    user.save()
+                    user_profile.reset_password_token = "0"
+                    user_profile.save()
+                    messages.info(request,"Password Reset Successfully")
+                    return redirect("login")
+                else:
+                    messages.info(request,"Passwords Do Not Match")
+                    return redirect(f'reset_password/{token}')
+            else:
+                return render(request,"resetpassword.html")
+    except Exception as e:
+        return HttpResponse("Link Expired")
 
